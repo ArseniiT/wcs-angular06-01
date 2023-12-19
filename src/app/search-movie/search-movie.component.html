@@ -1,1 +1,40 @@
-<p>search-movie works!</p>
+<div class="form-container">
+    <h2>Formulaire</h2>
+    <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+      <div formGroupName="idAndTitre">
+        <div class="form-group">
+          <label for="identifiant">Identifiant:</label>
+          <input type="text" id="identifiant" formControlName="Identifiant">
+        </div>
+        <div class="form-group">
+          <label for="titre">Titre:</label>
+          <input type="text" id="titre" formControlName="Titre">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="type">Type:</label>
+        <select id="type" formControlName="Type">
+          <option value="film">Film</option>
+          <option value="série">Série</option>
+          <option value="épisode">Épisode</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="annee">Année de sortie:</label>
+        <input type="number" id="annee" formControlName="Année de sortie">
+      </div>
+      <div class="form-group">
+        <label for="fiche">Fiche:</label>
+        <select id="fiche" formControlName="Fiche">
+          <option value="complète">Complète</option>
+          <option value="courte">Courte</option>
+        </select>
+      </div>
+      <div class="error-message" *ngIf="myForm.invalid && myForm.dirty">
+        <div *ngIf="myForm.get('Identifiers')?.hasError('isRequired')">L'un des deux champs 'Identifiant' ou 'Titre' doit être renseigné.</div>
+        <div *ngIf="myForm.get('annee')?.hasError('min')">L'année doit être comprise entre {{ myForm.get('annee')?.getError('min').min }} et {{ myForm.get('annee')?.getError('max').max }}.</div>
+        <div *ngIf="myForm.hasError('isRequired')">L'un des deux champs 'Identifiant' ou 'Titre' doit être renseigné.</div>
+      </div>
+      <button type="submit" [disabled]="myForm.invalid">Valider</button>
+    </form>
+</div>
