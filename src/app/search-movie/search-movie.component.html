@@ -1,5 +1,5 @@
 <div class="form-container">
-    <h2>Formulaire</h2>
+    <h2>Search Movie</h2>
     <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
       <div formGroupName="idAndTitre">
         <div class="form-group">
@@ -24,17 +24,23 @@
         <input type="number" id="annee" formControlName="Année de sortie">
       </div>
       <div class="form-group">
+        {{myForm.get('Identifiant')?.value}}
         <label for="fiche">Fiche:</label>
-        <select id="fiche" formControlName="Fiche">
+        <!-- <select id="fiche" formControlName="Fiche" [disabled]="myForm.get('Identifiant')?.value"> -->
+        <select id="fiche" formControlName="Fiche" [disabled]="true">
           <option value="complète">Complète</option>
           <option value="courte">Courte</option>
         </select>
       </div>
       <div class="error-message" *ngIf="myForm.invalid && myForm.dirty">
-        <div *ngIf="myForm.get('Identifiers')?.hasError('isRequired')">L'un des deux champs 'Identifiant' ou 'Titre' doit être renseigné.</div>
-        <div *ngIf="myForm.get('annee')?.hasError('min')">L'année doit être comprise entre {{ myForm.get('annee')?.getError('min').min }} et {{ myForm.get('annee')?.getError('max').max }}.</div>
-        <div *ngIf="myForm.hasError('isRequired')">L'un des deux champs 'Identifiant' ou 'Titre' doit être renseigné.</div>
+        <div *ngIf="myForm.get('idAndTitre')?.hasError('isRequired')">L'un des deux champs 'Identifiant' ou 'Titre' doit être renseigné.</div>
+        <div *ngIf="myForm.get('Année de sortie')?.hasError('min')">
+          L'année doit être comprise entre
+          {{ myForm.get('Année de sortie')?.getError('min').minimale }} et
+          {{ myForm.get('Année de sortie')?.getError('min').maximale }}.
+        </div>
       </div>
-      <button type="submit" [disabled]="myForm.invalid">Valider</button>
+      <!-- <button type="submit" [disabled]="myForm.invalid">Valider</button> -->
+      <button type="submit" >Search</button>
     </form>
 </div>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
+import { MyFormModel } from '../model/my-form.model';
 
 @Component({
   selector: 'app-search-movie',
@@ -22,23 +23,26 @@ export class SearchMovieComponent implements OnInit{
       ],
       Fiche: [''],
       idAndTitre: this.formBuilder.group({
-        Identifiant: ['', this.isRequiredValidator('Titre', 'Identifiant')],
-        Titre: ['', this.isRequiredValidator('Identifiant', 'Titre')],
-      })
+        Identifiant: [''],
+        Titre: ['']
+      }, { validators: this.isRequiredValidator('Identifiant', 'Titre') }),
     });
 
     this.myForm.patchValue({
       Fiche: EnumFiche.courte
     });
 
-    // this.myForm.get('type')?.setValue('série');
-    // this.myForm.get('fiche')?.patchValue('courte');
+    // this.myForm.valueChanges.subscribe(x => console.log(this.myForm.controls));
+    this.myForm.valueChanges.subscribe(x => {
+      // console.log(this.myForm)
+      // console.log(this.myForm.controls)
+    });
   }
 
-  isRequiredValidator(control1: string, control2: string) {
+  isRequiredValidator(controlName1: string, controlName2: string) {
     return (group: AbstractControl): ValidationErrors | null => {
-      const titreControl = group.get(control1);
-      const identifiantControl = group.get(control2);
+      const titreControl = group.get(controlName1);
+      const identifiantControl = group.get(controlName2);
 
       if (!titreControl?.value && !identifiantControl?.value) {
         return { isRequired: true };
@@ -52,24 +56,17 @@ export class SearchMovieComponent implements OnInit{
     return (control: AbstractControl): ValidationErrors | null => {
       // parse control value to int
       const year = parseInt(control.value);
-      // check if year is less than minimum
-      if (year <= minYear) {
-        return { 'min': { value: control.value, expected: minYear } };
-      }
-      // check if year is greater than maximum
-      if (year >= maxYear) {
-        return { 'max': { value: control.value, expected: maxYear } };
+      // check if year is less than minimum or greater than maximum
+      if (year < minYear || year > maxYear) {
+        return { 'min': { minimale: minYear, maximale: maxYear }};
       }
       return null;
     };
   };
 
   onSubmit() {
-    if (this.myForm.valid) {
-      console.log('Form submitted:', this.myForm.value);
-    } else {
-      this.errorMessage = "Please fix the errors in the form.";
-    }
+    console.log('Form submitted:');
+    console.log(this.myForm.value as MyFormModel);
   }
 
 }
