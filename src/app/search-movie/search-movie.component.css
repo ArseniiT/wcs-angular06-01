@@ -61,3 +61,7 @@ button:disabled {
     background-color: #eee;
     color: #888;
 }
+
+fieldset {
+    border-width: 0;
+}

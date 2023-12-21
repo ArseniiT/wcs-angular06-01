@@ -24,15 +24,16 @@
         <input type="number" id="annee" formControlName="Année de sortie">
       </div>
       <div class="form-group">
-        {{myForm.get('Identifiant')?.value}}
         <label for="fiche">Fiche:</label>
-        <!-- <select id="fiche" formControlName="Fiche" [disabled]="myForm.get('Identifiant')?.value"> -->
-        <select id="fiche" formControlName="Fiche" [disabled]="true">
-          <option value="complète">Complète</option>
-          <option value="courte">Courte</option>
-        </select>
+        <!-- La liste box Fiche doit être activée seulement si le champ Identifiant est renseigné. -->
+        <fieldset [disabled]="!myForm.value['idAndTitre']?.['Identifiant']">
+          <select id="fiche" formControlName="Fiche">
+            <option value="complète">Complète</option>
+            <option value="courte">Courte</option>
+          </select>
+        </fieldset>
       </div>
-      <div class="error-message" *ngIf="myForm.invalid && myForm.dirty">
+      <div class="error-message" *ngIf="submitted && myForm.invalid && myForm.dirty">
         <div *ngIf="myForm.get('idAndTitre')?.hasError('isRequired')">L'un des deux champs 'Identifiant' ou 'Titre' doit être renseigné.</div>
         <div *ngIf="myForm.get('Année de sortie')?.hasError('min')">
           L'année doit être comprise entre
@@ -40,7 +41,6 @@
           {{ myForm.get('Année de sortie')?.getError('min').maximale }}.
         </div>
       </div>
-      <!-- <button type="submit" [disabled]="myForm.invalid">Valider</button> -->
-      <button type="submit" >Search</button>
+      <button type="submit">Search</button>
     </form>
 </div>

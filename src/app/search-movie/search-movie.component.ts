@@ -9,34 +9,36 @@ import { MyFormModel } from '../model/my-form.model';
 })
 export class SearchMovieComponent implements OnInit{
   myForm!: FormGroup;
+  startYear = 1900;
   currentYear: number = new Date().getFullYear();
   errorMessage: string = '';
+  submitted = false;
 
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.myForm = this.formBuilder.group({
+      // La valeur par défaut du Type doit être valorisée à l'initialisation du contrôle avec la valeur séries
       Type: [EnumType.série],
       'Année de sortie': [
         this.currentYear,
-        [Validators.required, this.rangeDateValidator(1900, this.currentYear)]
+        [Validators.required, this.rangeDateValidator(this.startYear, this.currentYear)]
       ],
       Fiche: [''],
+      // Les deux champs Identifiant et Titre doivent être un FormGroup imbriqué
       idAndTitre: this.formBuilder.group({
         Identifiant: [''],
         Titre: ['']
       }, { validators: this.isRequiredValidator('Identifiant', 'Titre') }),
     });
 
+    // La valeur par défaut de Fiche doit être valorisée via .patchValue() avec la valeur courte
     this.myForm.patchValue({
       Fiche: EnumFiche.courte
     });
 
-    // this.myForm.valueChanges.subscribe(x => console.log(this.myForm.controls));
-    this.myForm.valueChanges.subscribe(x => {
-      // console.log(this.myForm)
-      // console.log(this.myForm.controls)
-    });
+    // Souscris aux changements des contrôles avec .valueChages et affiche la valeur dans la console
+    this.myForm.valueChanges.subscribe(x => console.log(this.myForm.controls));
   }
 
   isRequiredValidator(controlName1: string, controlName2: string) {
@@ -65,7 +67,8 @@ export class SearchMovieComponent implements OnInit{
   };
 
   onSubmit() {
-    console.log('Form submitted:');
+    // Les messages d'erreur de validation doivent être affichés uniquement après l'envoi du formulaire
+    this.submitted = true;
     console.log(this.myForm.value as MyFormModel);
   }
 
