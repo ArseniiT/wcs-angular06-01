@@ -14,9 +14,7 @@
       <div class="form-group">
         <label for="type">Type:</label>
         <select id="type" formControlName="Type">
-          <option value="film">Film</option>
-          <option value="série">Série</option>
-          <option value="épisode">Épisode</option>
+          <option *ngFor="let item of enumType | keyvalue" [value]="item.key">{{item.key | titlecase}}</option>
         </select>
       </div>
       <div class="form-group">
@@ -28,8 +26,7 @@
         <!-- La liste box Fiche doit être activée seulement si le champ Identifiant est renseigné. -->
         <fieldset [disabled]="!myForm.value['idAndTitre']?.['Identifiant']">
           <select id="fiche" formControlName="Fiche">
-            <option value="complète">Complète</option>
-            <option value="courte">Courte</option>
+            <option *ngFor="let item of enumFiche | keyvalue" [value]="item.key">{{item.key | titlecase}}</option>
           </select>
         </fieldset>
       </div>

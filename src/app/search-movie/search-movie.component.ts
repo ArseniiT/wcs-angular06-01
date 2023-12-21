@@ -13,6 +13,8 @@ export class SearchMovieComponent implements OnInit{
   currentYear: number = new Date().getFullYear();
   errorMessage: string = '';
   submitted = false;
+  enumType = EnumType;
+  enumFiche = EnumFiche;
 
   constructor(private formBuilder: FormBuilder) {}
 
@@ -74,7 +76,7 @@ export class SearchMovieComponent implements OnInit{
 
 }
 
-enum EnumType {
+export enum EnumType {
   film = 'film',
   série = 'série',
   épisode = 'épisode',
